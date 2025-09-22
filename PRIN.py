@@ -24,11 +24,11 @@ def eliminarProducto():#funcion para realizar la funcion de eliminar palabras
         if IdEliminado.get() == "":
             messagebox.showwarning("Advertencia", "Por favor, ingrese un ID.")
         else:
-            id_palabra = IdEliminado.get() #se guarda el numero ingresado por el usuario
+            id_prod = IdEliminado.get() #se guarda el numero ingresado por el usuario
             IdEliminado.delete(0, END)
-            cr.execute('DELETE FROM productos WHERE id = ?', (id_palabra,))#se elimina la palabra en base al ID
+            cr.execute('DELETE FROM productos WHERE id = ?', (id_prod,))#se elimina la palabra en base al ID
             baseDeDatos.commit()#GUARDA LOS Cambios en la base de datos
-            messagebox.showinfo("Accion exitosa", f"El producto con ID {id_palabra} fue eliminado con exito")#muestra un mensaje una vez se eliminó la palabra
+            messagebox.showinfo("Accion exitosa", f"El producto con ID {id_prod} fue eliminado con exito")#muestra un mensaje una vez se eliminó la palabra
             actualizarTabla()
             ventanaEliminar.destroy()#Se destruye la ventana emergente una vez se elimina la palabra
 
@@ -112,13 +112,54 @@ def moficarDatos():
         VentanaModificar.destroy()
     #-------------------------------------
     #creacionde  funciones para cada tipo de actualizacion
-    def guardar():
-        pass
+    def guardarModificaciones():  # funcion para eliminar la palabra
+        # validacion de los campos
+        if ObID.get == "" :
+            messagebox.showwarning("Advertencia", "Por favor, rellene todos los campos")
+        else:
+            # variables para almacenar  los valores de los entrys
+            idM = ObID.get()
+            nombreN = Nnomprod.get()
+            precioN = Nprecio.get()
+            cantidadN = Ncantidad.get()
+            cr.execute('''
+                    UPDATE productos
+                    SET nombre= ?, precio=?, cantidad=?
+                    WHERE id =?;''', (nombreN, precioN, cantidadN, idM))
+            baseDeDatos.commit()
+            messagebox.showinfo("Accion exitosa",f"El producto con ID {idM} fue actualizado con exito")  # muestra un mensaje una vez se eliminó la palabra
+            actualizarTabla()
+            VentanaModificar.destroy()  # Se destruye la ventana emergente una vez se elimina la palabra
+
     VentanaModificar=CTkToplevel(app)
-    VentanaModificar.title("Eliminar Producto")
+    VentanaModificar.title("Actualizar Producto")
     VentanaModificar.grab_set()
+    #----------------------
+    #etiqueta ny entry para pedir el ID que se queire   modificar
+    etiqueta1=CTkLabel(VentanaModificar, text="Ingrese el ID a modificar")
+    etiqueta1.grid(row=1, column=0)
+    ObID=CTkEntry(VentanaModificar)
+    ObID.grid(row=1, column=1, pady=5)
+
+    #etiquetas y entrys para guardar los campos
+    etiqueta2 = CTkLabel(VentanaModificar, text="Ingrese nuevo Nombre")
+    etiqueta2.grid(row=2, column=0)
+    Nnomprod = CTkEntry(VentanaModificar)
+    Nnomprod.grid(row=2, column=1, pady=5)
+    #precio
+    etiqueta3 = CTkLabel(VentanaModificar, text="Ingrese el nuevo precio")
+    etiqueta3.grid(row=3, column=0)
+    Nprecio = CTkEntry(VentanaModificar)
+    Nprecio.grid(row=3, column=1, pady=5)
+    #cantidad
+    etiqueta4 = CTkLabel(VentanaModificar, text="Ingrese la cantidad ")
+    etiqueta4.grid(row=4, column=0)
+    Ncantidad = CTkEntry(VentanaModificar)
+    Ncantidad.grid(row=4, column=1, pady=5)
+
     #boton de guardar
-    guardarMod=CTkButton(VentanaModificar, text="Guardar")
+    guardarMod=CTkButton(VentanaModificar, text="Guardar", command=guardarModificaciones)
+    guardarMod.grid(row=5,column=0)
 
 #---------------------------------
 baseDeDatos=connect("puntoDeVenta.db")
@@ -160,11 +201,15 @@ for palabra in palabras:
 #------------------------------------------------------
 #boton de agregar
 resul=CTkButton(app, text="Agregar", command=agregarProducto)
-resul.grid(row=7, column=0, padx=10,pady=10)
+resul.grid(row=7, column=0, padx=3,pady=10)
 #Boton para abrir la ventana de eliminar una palabra
 eliminar=CTkButton(app, text="Eliminar producto", command=eliminarProducto)
-eliminar.grid(row=7, column=1, padx=10,pady=10)
+eliminar.grid(row=7, column=1, padx=3,pady=10)
+#boton para actualizar
+actualizard=CTkButton(app, text='Actualizar', command=moficarDatos)
+actualizard.grid(row=7, column=2, padx=3,pady=10)
 #Boton para cerrar la ventana principal
 cerrarP=CTkButton(app, text='Cerrar', command=cerrarVentanaPrincipal)
-cerrarP.grid(row=7, column=2, padx=10,pady=10)
+cerrarP.grid(row=7, column=3, padx=3,pady=10)
+
 app.mainloop()
