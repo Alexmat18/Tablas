@@ -206,7 +206,7 @@ resul.grid(row=7, column=0, padx=3,pady=10)
 eliminar=CTkButton(app, text="Eliminar producto", command=eliminarProducto)
 eliminar.grid(row=7, column=1, padx=3,pady=10)
 #boton para actualizar
-actualizard=CTkButton(app, text='Actualizar', command=moficarDatos)
+actualizard=CTkButton(app, text='Modificar prod', command=moficarDatos)
 actualizard.grid(row=7, column=2, padx=3,pady=10)
 #Boton para cerrar la ventana principal
 cerrarP=CTkButton(app, text='Cerrar', command=cerrarVentanaPrincipal)
