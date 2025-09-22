@@ -46,7 +46,6 @@ def eliminarProducto():#funcion para realizar la funcion de eliminar palabras
     # Botón para eliminar la palabra en la ventana emergente para eliminar la palabra
     botonEliminar = CTkButton(ventanaEliminar, text="Eliminar", command=eliminar)
     botonEliminar.grid(row=2, column=0, pady=10)
-
 #---------------------------------------------
 # funcion para agregar la palabra
 def agregarProducto():
@@ -105,7 +104,7 @@ def agregarProducto():
     #boton de agregar
     botonAgregar = CTkButton(ventanaAgregar, text="Agregar", command=agregar)
     botonAgregar.grid(row=7, column=0)
-
+#-------------------------------------
 #funcion para modificar  los datos
 def moficarDatos():
     def cerrarModi():
@@ -114,8 +113,8 @@ def moficarDatos():
     #creacionde  funciones para cada tipo de actualizacion
     def guardarModificaciones():  # funcion para eliminar la palabra
         # validacion de los campos
-        if ObID.get == "" :
-            messagebox.showwarning("Advertencia", "Por favor, rellene todos los campos")
+        if ObID.get() == "" :
+            messagebox.showwarning("Advertencia", "Por favor, Ingrese al menos un ID")
         else:
             # variables para almacenar  los valores de los entrys
             idM = ObID.get()
@@ -139,28 +138,30 @@ def moficarDatos():
     etiqueta1=CTkLabel(VentanaModificar, text="Ingrese el ID a modificar")
     etiqueta1.grid(row=1, column=0)
     ObID=CTkEntry(VentanaModificar)
-    ObID.grid(row=1, column=1, pady=5)
+    ObID.grid(row=1, column=1, pady=5,padx=5)
 
     #etiquetas y entrys para guardar los campos
     etiqueta2 = CTkLabel(VentanaModificar, text="Ingrese nuevo Nombre")
     etiqueta2.grid(row=2, column=0)
     Nnomprod = CTkEntry(VentanaModificar)
-    Nnomprod.grid(row=2, column=1, pady=5)
+    Nnomprod.grid(row=2, column=1, pady=5,padx=5)
     #precio
     etiqueta3 = CTkLabel(VentanaModificar, text="Ingrese el nuevo precio")
     etiqueta3.grid(row=3, column=0)
     Nprecio = CTkEntry(VentanaModificar)
-    Nprecio.grid(row=3, column=1, pady=5)
+    Nprecio.grid(row=3, column=1, pady=5,padx=5)
     #cantidad
     etiqueta4 = CTkLabel(VentanaModificar, text="Ingrese la cantidad ")
     etiqueta4.grid(row=4, column=0)
     Ncantidad = CTkEntry(VentanaModificar)
-    Ncantidad.grid(row=4, column=1, pady=5)
+    Ncantidad.grid(row=4, column=1, pady=5,padx=5)
 
     #boton de guardar
     guardarMod=CTkButton(VentanaModificar, text="Guardar", command=guardarModificaciones)
     guardarMod.grid(row=5,column=0)
-
+    # Boton para cerrar la ventana principal
+    cerrarM = CTkButton(VentanaModificar, text='Cerrar', command=cerrarModi)
+    cerrarM.grid(row=5, column=1, padx=3, pady=10)
 #---------------------------------
 baseDeDatos=connect("puntoDeVenta.db")
 #se crea el cursor
@@ -182,15 +183,13 @@ app.title("Comerciarl los trigales")
 mi_fuente = customtkinter.CTkFont(family="Arial", size=15)
 fontm=mi_fuente
 #--------------------------------------------------------------#funcion para hacer que la ventana se cierrre
-
-
 tabla = ttk.Treeview(app, columns=("ID","Producto", "Precio","Cantidad"), show="headings")
 tabla.column("ID", width=20, anchor="center")
 tabla.heading("ID", text="ID")
 tabla.heading("Producto", text="Producto")
 tabla.heading("Precio", text="Precio")
 tabla.heading("Cantidad", text="Cantidad")
-tabla.grid(row=0, column=0, columnspan=3)
+tabla.grid(row=0, column=0, columnspan=4)
 
 # Llenar la tabla con datos
 cr.execute('SELECT * FROM productos')
